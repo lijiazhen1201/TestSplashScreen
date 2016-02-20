@@ -54,31 +54,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
         vpGuide = (ViewPager) findViewById(R.id.vp_guide);
         list = new ArrayList<>();
 
-        for (int i = 0; i < resIds.length; i++) {
-            /**
-             * 动态添加引导图片
-             */
-            ImageView img = new ImageView(this);
-            img.setImageResource(resIds[i]);
-            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            RelativeLayout.LayoutParams lpImg=new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT);
-            img.setLayoutParams(lpImg);
-            list.add(img);
-            /**
-             * 动态添加引导点
-             */
-            ImageView dot = new ImageView(this);
-            dot.setImageResource(R.mipmap.dot_unselect);
-            dot.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            LinearLayout.LayoutParams lpDot = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            lpDot.setMargins(10, 0, 10, 0);
-            dot.setLayoutParams(lpDot);
-            llDots.addView(dot);
-        }
+        initData();
+
         /**
          * ViewPager设置适配器
          */
@@ -97,6 +74,37 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
          * ViewPager设置事件监听
          */
         vpGuide.setOnPageChangeListener(this);
+    }
+
+    /**
+     * 初始化引导图片和引导点
+     */
+    private void initData() {
+        for (int i = 0; i < resIds.length; i++) {
+            /**
+             * 动态添加引导图片
+             */
+            ImageView img = new ImageView(this);
+            img.setImageResource(resIds[i]);
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            RelativeLayout.LayoutParams lpImg = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            img.setLayoutParams(lpImg);
+            list.add(img);
+            /**
+             * 动态添加引导点
+             */
+            ImageView dot = new ImageView(this);
+            dot.setImageResource(R.mipmap.dot_unselect);
+            dot.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            LinearLayout.LayoutParams lpDot = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lpDot.setMargins(10, 0, 10, 0);
+            dot.setLayoutParams(lpDot);
+            llDots.addView(dot);
+        }
     }
 
     /**
@@ -124,15 +132,6 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onPageSelected(int position) {
         /**
-         * 当滑动到最后一页时，隐藏所有的点
-         * 其他情况下则显示出来
-         */
-        if (position == resIds.length - 1) {
-            llDots.setVisibility(View.GONE);
-        } else {
-            llDots.setVisibility(View.VISIBLE);
-        }
-        /**
          * 清空点的状态
          */
         clearDots();
@@ -141,6 +140,15 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
          */
         ImageView dot = (ImageView) llDots.getChildAt(position);
         dot.setImageResource(R.mipmap.dot_select);
+        /**
+         * 当滑动到最后一页时，隐藏所有的点
+         * 其他情况下则显示出来
+         */
+        if (position == resIds.length - 1) {
+            llDots.setVisibility(View.GONE);
+        } else {
+            llDots.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
